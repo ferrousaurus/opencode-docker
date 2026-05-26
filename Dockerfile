@@ -1,10 +1,12 @@
 FROM oven/bun:debian
-ARG repo
-
-RUN git clone $repo \
-    && bun add -g opencode-ai
-
 WORKDIR /usr/src
 USER bun
+
+RUN bun add -g opencode-ai
+
+ARG repo
+RUN git clone $repo
+
 EXPOSE 3000/tcp
-ENTRYPOINT [ "opencode" ]
+ENTRYPOINT [ "opencode", "web" ]
+CMD [ "--port", "3000", "--mdns" ]
